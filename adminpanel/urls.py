@@ -7,4 +7,5 @@ urlpatterns = [
     path( 'result/', views.Result.as_view(), name = 'result'),
     path( 'contact/page-<int:page>', views.Contact.as_view(), name = 'contact' ),
     path( 'template/', views.TemplateSetting.as_view(), name = 'template' ),
+    path('result/<str:slug>.<int:pk>/', views.ForumResult.as_view(), name = 'forumresult'),
 ]

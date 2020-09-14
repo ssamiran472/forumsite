@@ -28,7 +28,11 @@ class Article(models.Model):
     parent = models.ForeignKey(Forum, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     origin_url = models.CharField(max_length=200)
-
+    def isTranslated(self,srcLang):
+        for var in self.translatedarticle_set.all() :
+            if var.language == srcLang :
+                return True
+        return False
 
 class Language(models.Model):
     langcode = models.CharField(max_length=3)

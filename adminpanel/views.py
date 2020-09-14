@@ -65,3 +65,28 @@ class TemplateSetting(generic.View):
             'unreadmessages' : len(ContactUs.objects.filter(isRead=False))
         }
         return HttpResponse(self.template.render(context,self.request))
+
+class ForumResult(generic.View):
+    template = loader.get_template('admin/forumresult.html')
+    def get(self, *args, **kwargs ):
+        var = Forum.objects.get(id=kwargs['pk'])
+
+        langList = Language.objects.all()
+        articleList = var.article_set.all()
+        dataList = []
+        for val in articleList:
+            info = {'article':val}
+            transInfo = []
+            for lang in langList :
+                transInfo.append (val.isTranslated(lang) )
+            info['transInfo'] = transInfo
+            dataList.append(info)
+
+        context = {
+            'ContentForum' : var,
+            'dataList' : dataList,
+            'Languages' : langList,
+            'unreadmessages' : len(ContactUs.objects.filter(isRead=False)),
+        }
+        return HttpResponse(self.template.render(context,self.request))
+
