@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %} {{transArticle.name}} {% endblock %}
+{% block contentTitle %}  {{transArticle.name}}{% endblock %}
+{% block titleArea %}
+<p>This is forum for {{transArticle.name}}</p>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'index' %}">Forums</a> <i class="fas fa-angle-right"></i> </li>
+      <li class="breadcrumb-item"><a href = "{% url 'categories' transArticle.parent.parent.parent.slug transArticle.parent.parent.parent.id%}">{{transArticle.parent.parent.parent.name}}</a> <i class="fas fa-angle-right"></i> </li>
+      <li class="breadcrumb-item"><a href = "{% url 'forums' transArticle.parent.parent.slug transArticle.parent.parent.id 1 %}" class="active">{{transArticle.parent.parent.name}}</a></li>
+    </ol>
+  </nav>
+
+{% endblock %}
+{% block content %}
+    <h1>
+        <a href="{{transArticle.parent.origin_url}}">
+            <button type="button" class="btn btn-warning">To original post</button>
+        </a>
+    </h1>
+    {% for question in transArticle.question_set.all %}
+    <br>
+    <div class='card bg-success text-white'>
+        <div class='card-body'>
+            {{question.content|safe}}
+        </div>
+    </div>
+    {% endfor %}
+    {% for answer in transArticle.answer_set.all %}
+    <br>
+    <div class='card bg-primary text-white'>
+        <div class='card-body'>
+            {{answer.content|safe}}
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

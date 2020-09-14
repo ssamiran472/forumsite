@@ -1,0 +1,180 @@
+{% load static %}
+{% url 'index' as home_url %}
+{% url 'scrape' as scrape_url %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/icofont/icofont.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/venobox/venobox.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo mr-auto"><a href="/"><span>Toms</span>Hardware</a></h1>
+
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+          <li {% if request.path == home_url %} class="active"{% endif %}><a href="{{home_url}}">Home</a></li>
+<!--
+          <li {% if request.path == scrape_url %} class="active"{% endif %} ><a href="{{scrape_url}}">Scrape</a></li>
+-->
+          <li><button data-toggle="modal" data-target="#languageModal">Language|{{currentLangCode}}</button></li>
+
+          {% if user.is_authenticated %}
+          <li><a href = "{% url 'logout' %} " >{{user}} </a> </li>
+          {% else %}
+          <li><button data-toggle="modal" data-target="#loginModal">Log In</button></li>
+          <li><button data-toggle="modal" data-target="#registerModal">Register</button></li>
+          {% endif %}
+
+        </ul>
+      </nav><!-- .nav-menu -->
+
+      <div class="header-social-links">
+        <a href="#" class="twitter"><i class="icofont-twitter"></i></a>
+        <a href="#" class="facebook"><i class="icofont-facebook"></i></a>
+        <a href="#" class="instagram"><i class="icofont-instagram"></i></a>
+        <a href="#" class="linkedin"><i class="icofont-linkedin"></i></i></a>
+      </div>
+
+    </div>
+  </header><!-- End Header -->
+  <div style="margin-top:100px;" class="container">
+    {% for msg in messages %}
+    <div class="alert alert-{{msg.tags}} alert-dismissible">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>{{msg.tags.capitalize}}!</strong> {{msg}}
+    </div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- The Language Modal -->
+  <div class="modal" id="languageModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Language Chooser</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <ul>
+            {% for lang in language %}
+              <li>
+                <a href="{% url 'viewlanguage' lang.langcode %}"> {{lang.fullName}} </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- The Login Modal -->
+  <div class="modal" id="loginModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Log In</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{% url 'login' %}" method = "POST">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" name = "username" placeholder="User name">
+            </div>
+            <div class="input-group mb-3">
+              <input type="password" name="password" class="form-control" placeholder="Your Password">
+            </div>
+            <div>
+              <button type = "submit" class="btn btn-block btn-success">Log In</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Register Modal -->
+  <div class="modal" id="registerModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Register</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{% url 'register' %}" method = "POST">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" name = "username" placeholder="User name">
+            </div>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" name = "email" placeholder="Your email address">
+            </div>
+            <div class="input-group mb-3">
+              <input type="password" name="password" class="form-control" placeholder="Your Password">
+            </div>
+            <div>
+              <button type = "submit" class="btn btn-block btn-success">Register</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vendor JS Files -->
+    <script src="{% static '/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery.easing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+
+    <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+
+    <script src="{% static 'vendor/jquery-sticky/jquery.sticky.js' %}"></script>
+    <script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'vendor/venobox/venobox.min.js' %}"></script>
+    <script src="{% static 'vendor/waypoints/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'vendor/owl.carousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'vendor/aos/aos.js' %}"></script>
+<!-- Template JS Files -->
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    {% block javascript %}{% endblock %}
+
+</body>
+</html>
+
+
+
+
+
+

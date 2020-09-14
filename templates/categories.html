@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} {{category.name}} {% endblock %}
+{%block contentTitle %} {{category.name}} {% endblock %}
+
+{% block content %}
+<div class="col-md-12">
+    <div class="block">
+        <div class="row collapse show">
+            {% for forum in category.forum_set.all %}
+            <div class="col-md-6">
+             <div class="category_block">
+               <div class="post media">
+                  <img src="{% static 'images/avater.jpg' %}" alt="">
+                  <div class="media-body">
+                    <a href = "{% url 'forums' forum.slug forum.id 1 %}">{{forum.name}} </a>
+                     <p>Get your latest dose of news from around the World of Tech</p>
+                     <div class="meta">
+                       <span>{{forum.article_set.all.count}}</span> Threads
+                     </div>
+                  </div>
+               </div>
+               <div class="bottom">
+                  <a href="#"> <i class="fas fa-arrow-right"></i> More</a>
+               </div>
+            </div>
+           </div>
+           {% endfor %}
+        </div>
+     </div>
+</div>
+    
+{% endblock %}

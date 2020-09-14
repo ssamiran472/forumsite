@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Forum {% endblock %}
+{%block contentTitle %} Forum List {% endblock %}
+{% block content %}
+<div class="row">
+        <div class="col-lg-9">
+            {% for category in categories %}
+            <div class="block">
+                <div class="block_title row justify-content-between">
+                   <h4><a href = "{% url 'categories' category.slug category.id%}">{{category.name}}</a></h4>
+                   <div class="triger" data-toggle="collapse" href="#collapse_{{ forloop.counter }}" role="button" aria-expanded="false" aria-controls="collapse_{{ forloop.counter }}">
+                     <i class="fas fa-chevron-up"></i>
+                     <i class="fas fa-chevron-down"></i>
+                   </div>
+                </div>
+                <div class="row collapse show" id="collapse_{{ forloop.counter }}">
+                    {% for iforum in category.forum_set.all %}
+                    <div class="col-md-6">
+                        <div class="category_block">
+                          <div class="post media">
+                             <img src="{% static 'images/avater.jpg' %}" alt="">
+                             <div class="media-body">
+                                <a href = "{% url 'forums' iforum.slug iforum.id 1 %}">{{iforum.name}}</a>
+                                <p>This is forum for {{iforum.name}}</p>
+                                <div class="meta">
+                                  <span>{{iforum.article_set.all.count}}</span> Threads
+                                </div>
+                             </div>
+                          </div>
+                          <!--
+                          <div class="post media">
+                             <img src="{% static 'images/avater.jpg' %}" alt="">
+                             <div class="media-body">
+                                <a href="#">Tech News <span class="bage">New</span></a>
+                                <p>Get your latest dose of news from around the World of Tech</p>
+                                <div class="meta">
+                                  <span>32.6K</span> Threads <span>32.7K</span> Messages
+                                </div>
+                             </div>
+                          </div>
+                          -->
+                          <div class="bottom">
+                             <a href="#"> <i class="fas fa-arrow-right"></i> More</a>
+                          </div>
+                       </div>
+                      </div>    
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+
+        <div class="col-lg-3">
+         <div class="widget">
+            <h4 class="title"> <i class="fas fa-file-alt mr-2"></i> Donate Today!</h4>
+            <div class="inwrap text-center p-3">
+                <p class="text-white">If we've helped you, please feel free to donate to us.</p>
+
+                <p class="text-white"> PCHF runs on donations, and any amount you can give is most appreciated.</p>
+               <img src="{% static 'images/btn_donateCC_LG.webp' %}" alt="">
+            </div>
+         </div>
+
+         <div class="widget">
+            <h4 class="title"> <i class="fas fa-user-friends mr-2"></i> <a href="#">Staff online</a></h4>
+            <div class="post media">
+              <img src="{% static 'images/avater.jpg' %}" alt="">
+              <div class="media-body">
+                 <a href="#" class="red">veeg</a>
+                 <p>PCHF Manager</p>
+              </div>
+           </div>
+            <div class="post media">
+              <img src="{% static 'images/avater.jpg' %}" alt="">
+              <div class="media-body">
+                 <a href="#" class="red">veeg</a>
+                 <p>PCHF Manager</p>
+              </div>
+           </div>
+         </div>
+
+
+         <div class="widget">
+            <h4 class="title"> <i class="fas fa-user-friends mr-2"></i> <a href="#">Members online</a></h4>
+            <div class="post media">
+              <div class="media-body">
+                 <a class="red" href="#">veeg</a>,
+                 <a href="#">BEEFSUPREME</a>,
+                 <a class="red" href="#">jmarket</a>,
+                 <a href="#">AmyBerry</a>,
+                 <a class="red" href="#">veeg</a>,
+                 <a href="#">BEEFSUPREME</a>,
+                 <a class="red" href="#">jmarket</a>,
+                 <a href="#">AmyBerry</a>
+              </div>
+           </div>
+           <div class="bottom">
+              Total: 168 (members: 5, guests: 163)
+           </div>
+         </div>
+
+         <div class="widget">
+            <h4 class="title"> <i class="fas fa-comment-alt mr-2"></i> Latest posts</h4>
+            {% for post in latestposts %}
+            <div class="post media">
+               <img src="{% static 'images/avater.jpg' %}" alt="">
+               <div class="media-body">
+                  <a href = "{% url 'thread' post.slug post.id %}">{{post.name}}</a>
+                  <p>Latest: pr0p5man Today at 1:23 PM</p>
+                  <a href = "{% url 'forums' post.parent.parent.slug post.parent.parent.id 1 %}" class="gray"> {{post.parent.parent.name}}</a>
+               </div>
+            </div>
+            {% endfor %}
+         </div>
+
+         <div class="widget">
+            <h4 class="title"> <i class="fas fa-comment-alt mr-2"></i> Latest resources</h4>
+            <div class="post media">
+              <img src="{% static 'images/avater.jpg' %}" alt="">
+              <div class="media-body">
+                 <a href="#" > In Progress cheap Aftermarket coolers</a>
+                 <h5>Obtain information about your computer hardware and software</h5>
+                 <p>Latest: pr0p5man Today at 1:23 PM</p>
+              </div>
+           </div>
+         </div>
+         <!-- End Widget -->
+
+         <div class="widget">
+           <h4 class="title"> <i class="fas fa-chart-area mr-2"></i>  Forum statistics</h4>
+           <div class="post media">
+             <div class="media-body">
+                <p class="d-flex justify-content-between">
+                    <span>Threads</span>
+                    <span>50,361</span>
+                </p>
+                <p class="d-flex justify-content-between">
+                    <span>Messages</span>
+                    <span>98,789</span>
+                </p>
+                <p class="d-flex justify-content-between">
+                    <span>Members</span>
+                    <span>3,696</span>
+                </p>
+                <p class="d-flex justify-content-between">
+                    <span>Latest member</span>
+                    <span><a href="#">DEViANCE</a></span>
+                </p>
+             </div>
+          </div>
+         </div>
+
+        <div class="widget">
+           <h4 class="title"> <i class="fas fa-comment-alt mr-2"></i> <a href="#">Latest profile posts</a></h4>
+           <div class="post media">
+             <img src="{% static 'images/avater.jpg' %}" alt="">
+             <div class="media-body">
+                <p class="d-flex align-items-center"> <a href="#" class="red"> Colwow </a> <i class="fas fa-caret-right px-2"></i> <a href="#">phillpower2</a></p>
+                <h5>Obtain information about your computer hardware and software</h5>
+                <div class="d-flex justify-content-between">
+                   <a href="" class="gray">Jul 2, 2020</a>
+                   <a href="#"><i class="fas fa-ellipsis-h"></i></a>
+                </div>
+             </div>
+          </div>
+          <!-- End post -->
+        </div>
+
+        <div class="widget">
+           <h4 class="title"> <i class="fas fa-share-alt mr-2"></i>  Share this page </h4>
+           <div class="inwrap text-center">
+              <a href="#" class="btn btn-info btn-sm"> <i class="fas fa-share"></i> SHARE THIS PAGE</a>
+
+           </div>
+         </div>
+      </div>
+   </div>
+
+{% endblock %}
+
